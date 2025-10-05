@@ -1,0 +1,37 @@
+[
+  {
+    "id": 101,
+    "name": "Anti-Acne Face Serum",
+    "category": "Serums",
+    "price": 599,
+    "imageUrl": "https://example.com/images/serum.jpg"
+  },
+  {
+    "id": 102,
+    "name": "Vitamin C Face Wash",
+    "category": "Cleansers",
+    "price": 349,
+    "imageUrl": "https://example.com/images/facewash.jpg"
+  },
+  {
+    "id": 103,
+    "name": "Daily Moisturizer SPF 50",
+    "category": "Moisturizers",
+    "price": 799,
+    "imageUrl": "https://example.com/images/moisturizer.jpg"
+  },
+  {
+    "id": 104,
+    "name": "Hydrating Toner",
+    "category": "Toners",
+    "price": 450,
+    "imageUrl": "https://example.com/images/toner.jpg"
+  },
+  {
+    "id": 1759675656865,
+    "name": "Om Serum",
+    "category": "Cleansers",
+    "price": 200,
+    "imageUrl": "https://example.com/images/placeholder.jpg"
+  }
+]

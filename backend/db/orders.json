@@ -1,0 +1,53 @@
+[
+  {
+    "orderId": 1759664837010,
+    "userId": 1759663930165,
+    "items": [
+      {
+        "productId": 101,
+        "quantity": 1
+      },
+      {
+        "productId": 103,
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 1398,
+    "orderDate": "2025-10-05T11:47:17.010Z",
+    "status": "Placed"
+  },
+  {
+    "orderId": 1759664869625,
+    "userId": 1759663930165,
+    "items": [
+      {
+        "productId": 101,
+        "quantity": 1
+      },
+      {
+        "productId": 103,
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 1398,
+    "orderDate": "2025-10-05T11:47:49.626Z",
+    "status": "Placed"
+  },
+  {
+    "orderId": 1759674742030,
+    "userId": 1759663930165,
+    "items": [
+      {
+        "productId": 104,
+        "quantity": 1
+      },
+      {
+        "productId": 103,
+        "quantity": 1
+      }
+    ],
+    "totalAmount": 1249,
+    "orderDate": "2025-10-05T14:32:22.030Z",
+    "status": "Placed"
+  }
+]
