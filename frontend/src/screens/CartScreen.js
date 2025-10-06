@@ -5,7 +5,10 @@ import { CartContext } from '../context/CartContext';
 import { AuthContext } from '../context/AuthContext'; // <-- 1. Import AuthContext
 import { placeOrder } from '../api/orderApi';       // <-- 2. Import placeOrder
 import { useNavigation } from '@react-navigation/native'; 
+import RazorpayCheckout from 'react-native-razorpay'; 
+import { BASE_URL } from '../api/authApi';
 
+const PAYMENT_API_URL = `${BASE_URL}/payment`; 
 const CartScreen = () => {
   const { items, removeFromCart, clearCart } = useContext(CartContext);
     const { userToken } = useContext(AuthContext);
@@ -14,27 +17,51 @@ const CartScreen = () => {
   // Calculate the total price
   const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-  // 5. Create the checkout handler
   const handleCheckout = async () => {
-    try {
-      const response = await placeOrder(items, userToken);
-      if (response.order) {
-        Alert.alert('Success', 'Your order has been placed!', [
-          {
-            text: 'OK',
-            onPress: () => {
-              clearCart();
-              navigation.navigate('My Orders');
-            },
-          },
-        ]);
-      } else {
-        Alert.alert('Error', response.message || 'Could not place order.');
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert('Error', 'An unexpected error occurred during checkout.');
+    // 1. Create a Razorpay order from our backend
+    const orderResponse = await fetch(`${PAYMENT_API_URL}/create-order`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: totalPrice, currency: 'INR' }),
+    });
+    const orderData = await orderResponse.json();
+
+    if (!orderData.id) {
+        Alert.alert('Error', 'Could not create a payment order.');
+        return;
     }
+
+    // 2. Configure and open the Razorpay checkout screen
+    const options = {
+      description: 'Payment for your Dermatouch order',
+      image: 'https://your-company-logo.png', // Optional
+      currency: 'INR',
+      key: 'rzp_test_RPq0PLVcYztflC', // Use your Key ID
+      amount: orderData.amount,
+      name: 'Dermatouch',
+      order_id: orderData.id,
+      prefill: { email: 'user@example.com', contact: '9999999999' },
+      theme: { color: '#841584' }
+    };
+
+    RazorpayCheckout.open(options)
+      .then(async (data) => {
+        // 3. On successful payment, now place the order in OUR database
+        Alert.alert('Success', `Payment successful: ${data.razorpay_payment_id}`);
+
+        // Call our original placeOrder function
+        const finalOrderResponse = await placeOrder(items, userToken);
+        if (finalOrderResponse.order) {
+          clearCart();
+          navigation.navigate('My Orders');
+        } else {
+          Alert.alert('Error', 'Payment was successful, but failed to place the order.');
+        }
+      })
+      .catch((error) => {
+        // 4. Handle payment failure or cancellation
+        Alert.alert('Payment Failed', `Error: ${error.code} | ${error.description}`);
+      });
   };
 
   if (items.length === 0) {

@@ -1,11 +1,14 @@
 // index.js
 
+require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products'); 
 const orderRoutes = require('./routes/orders');
+const paymentRoutes = require('./routes/payment');
 
 // Initialize the app
 const app = express();
@@ -23,6 +26,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/payment', paymentRoutes);
 
 // Start the server
 app.listen(PORT, () => {
